@@ -67,6 +67,13 @@ public interface TransportService {
 
     void process(SessionInfoProto sessionInfo, SessionEventMsg msg, TransportServiceCallback<Void> callback);
 
+    /**
+     * 处理遥测数据
+     * 
+     * @param sessionInfo
+     * @param msg
+     * @param callback
+     */
     void process(SessionInfoProto sessionInfo, PostTelemetryMsg msg, TransportServiceCallback<Void> callback);
 
     void process(SessionInfoProto sessionInfo, PostAttributeMsg msg, TransportServiceCallback<Void> callback);

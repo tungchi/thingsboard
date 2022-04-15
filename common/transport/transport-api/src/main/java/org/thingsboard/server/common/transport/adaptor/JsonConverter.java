@@ -15,54 +15,25 @@
  */
 package org.thingsboard.server.common.transport.adaptor;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSyntaxException;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.util.StringUtils;
 import org.thingsboard.server.common.data.DataConstants;
 import org.thingsboard.server.common.data.id.DeviceId;
-import org.thingsboard.server.common.data.kv.AttributeKvEntry;
-import org.thingsboard.server.common.data.kv.BaseAttributeKvEntry;
-import org.thingsboard.server.common.data.kv.BooleanDataEntry;
-import org.thingsboard.server.common.data.kv.DoubleDataEntry;
-import org.thingsboard.server.common.data.kv.JsonDataEntry;
-import org.thingsboard.server.common.data.kv.KvEntry;
-import org.thingsboard.server.common.data.kv.LongDataEntry;
-import org.thingsboard.server.common.data.kv.StringDataEntry;
+import org.thingsboard.server.common.data.kv.*;
 import org.thingsboard.server.gen.transport.TransportProtos;
-import org.thingsboard.server.gen.transport.TransportProtos.AttributeUpdateNotificationMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ClaimDeviceMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.CredentialsType;
-import org.thingsboard.server.gen.transport.TransportProtos.GetAttributeResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.KeyValueProto;
-import org.thingsboard.server.gen.transport.TransportProtos.KeyValueType;
-import org.thingsboard.server.gen.transport.TransportProtos.PostAttributeMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.PostTelemetryMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ProvisionDeviceResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ResponseStatus;
-import org.thingsboard.server.gen.transport.TransportProtos.TsKvListProto;
-import org.thingsboard.server.gen.transport.TransportProtos.TsKvProto;
-import org.thingsboard.server.gen.transport.TransportProtos.ValidateBasicMqttCredRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ValidateDeviceTokenRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ValidateDeviceX509CertRequestMsg;
+import org.thingsboard.server.gen.transport.TransportProtos.*;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
+import com.google.gson.*;
 
+/**
+ * json转换类
+ */
 public class JsonConverter {
 
     private static final Gson GSON = new Gson();
@@ -74,16 +45,39 @@ public class JsonConverter {
 
     private static int maxStringValueLength = 0;
 
+    /**
+     * 转换成遥测数据
+     * 
+     * @param jsonElement
+     * @param ts
+     * @return
+     * @throws JsonSyntaxException
+     */
     public static PostTelemetryMsg convertToTelemetryProto(JsonElement jsonElement, long ts) throws JsonSyntaxException {
         PostTelemetryMsg.Builder builder = PostTelemetryMsg.newBuilder();
         convertToTelemetry(jsonElement, ts, null, builder);
         return builder.build();
     }
 
+    /**
+     * 转换成遥测数据
+     * 
+     * @param jsonElement
+     * @return
+     * @throws JsonSyntaxException
+     */
     public static PostTelemetryMsg convertToTelemetryProto(JsonElement jsonElement) throws JsonSyntaxException {
         return convertToTelemetryProto(jsonElement, System.currentTimeMillis());
     }
 
+    /**
+     * 将消息转换成Telemetry遥测数据
+     * 
+     * @param jsonElement
+     * @param systemTs
+     * @param result
+     * @param builder
+     */
     private static void convertToTelemetry(JsonElement jsonElement, long systemTs, Map<Long, List<KvEntry>> result, PostTelemetryMsg.Builder builder) {
         if (jsonElement.isJsonObject()) {
             parseObject(systemTs, result, builder, jsonElement.getAsJsonObject());
@@ -104,6 +98,7 @@ public class JsonConverter {
         if (result != null) {
             parseObject(result, systemTs, jo);
         } else {
+            // result传入为null时初始化
             parseObject(builder, systemTs, jo);
         }
     }

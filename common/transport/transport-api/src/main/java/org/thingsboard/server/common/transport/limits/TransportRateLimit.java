@@ -15,6 +15,9 @@
  */
 package org.thingsboard.server.common.transport.limits;
 
+/**
+ * 传输速率限制接口
+ */
 public interface TransportRateLimit {
 
     String getConfiguration();

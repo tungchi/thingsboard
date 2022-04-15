@@ -15,7 +15,15 @@
  */
 package org.thingsboard.server.common.transport.limits;
 
-import lombok.extern.slf4j.Slf4j;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -30,14 +38,7 @@ import org.thingsboard.server.common.transport.TransportTenantProfileCache;
 import org.thingsboard.server.common.transport.profile.TenantProfileUpdateResult;
 import org.thingsboard.server.queue.util.TbTransportComponent;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @TbTransportComponent
@@ -66,9 +67,11 @@ public class DefaultTransportRateLimitService implements TransportRateLimitServi
 
     @Override
     public EntityType checkLimits(TenantId tenantId, DeviceId deviceId, int dataPoints) {
+        // 判断允许租户缓存里没有对应租户id,返回EntityType.API_USAGE_STATE
         if (!tenantAllowed.getOrDefault(tenantId, Boolean.TRUE)) {
             return EntityType.API_USAGE_STATE;
         }
+        // 判断
         if (!checkEntityRateLimit(dataPoints, getTenantRateLimits(tenantId))) {
             return EntityType.TENANT;
         }
@@ -233,14 +236,24 @@ public class DefaultTransportRateLimitService implements TransportRateLimitServi
         }
     }
 
+    /**
+     * 根据租户配置,获取频率限制
+     * 
+     * @param tenantProfile
+     * @param tenant
+     * @return
+     */
     private EntityTransportRateLimits createRateLimits(TenantProfile tenantProfile, boolean tenant) {
         TenantProfileData profileData = tenantProfile.getProfileData();
         DefaultTenantProfileConfiguration profile = (DefaultTenantProfileConfiguration) profileData.getConfiguration();
         if (profile == null) {
             return new EntityTransportRateLimits(ALLOW, ALLOW, ALLOW);
         } else {
+            // 租户消息频率限制
             TransportRateLimit regularMsgRateLimit = newLimit(tenant ? profile.getTransportTenantMsgRateLimit() : profile.getTransportDeviceMsgRateLimit());
+            // 如果是租户,返回租户遥测消息速率限制,否则返回设备的,上下同
             TransportRateLimit telemetryMsgRateLimit = newLimit(tenant ? profile.getTransportTenantTelemetryMsgRateLimit() : profile.getTransportDeviceTelemetryMsgRateLimit());
+            // 租户遥测数据点速率限制
             TransportRateLimit telemetryDpRateLimit = newLimit(tenant ? profile.getTransportTenantTelemetryDataPointsRateLimit() : profile.getTransportTenantTelemetryDataPointsRateLimit());
             return new EntityTransportRateLimits(regularMsgRateLimit, telemetryMsgRateLimit, telemetryDpRateLimit);
         }
@@ -250,6 +263,7 @@ public class DefaultTransportRateLimitService implements TransportRateLimitServi
         return StringUtils.isEmpty(config) ? ALLOW : new SimpleTransportRateLimit(config);
     }
 
+    // 获取租户频率限制
     private EntityTransportRateLimits getTenantRateLimits(TenantId tenantId) {
         EntityTransportRateLimits limits = perTenantLimits.get(tenantId);
         if (limits == null) {

@@ -15,11 +15,15 @@
  */
 package org.thingsboard.server.common.msg.tools;
 
-import lombok.Getter;
 import org.thingsboard.server.common.data.EntityType;
 
+import lombok.Getter;
+
 /**
- * Created by ashvayka on 22.10.18.
+ * 速率限制异常
+ * 
+ * @author tungchi
+ * @date 2022-04-15 Created by ashvayka on 22.10.18.
  */
 public class TbRateLimitsException extends RuntimeException {
     @Getter

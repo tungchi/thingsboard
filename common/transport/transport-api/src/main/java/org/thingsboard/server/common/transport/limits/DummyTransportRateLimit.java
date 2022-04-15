@@ -15,6 +15,12 @@
  */
 package org.thingsboard.server.common.transport.limits;
 
+/**
+ * 虚拟的传输频率限制类
+ * 
+ * @author tungchi
+ * @date 2022-04-15
+ */
 public class DummyTransportRateLimit implements TransportRateLimit {
 
     @Override

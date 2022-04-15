@@ -16,8 +16,86 @@
 package org.thingsboard.server.common.data;
 
 /**
+ * 实体类型
+ * 
  * @author Andrew Shvayka
  */
 public enum EntityType {
-    TENANT, CUSTOMER, USER, DASHBOARD, ASSET, DEVICE, ALARM, RULE_CHAIN, RULE_NODE, ENTITY_VIEW, WIDGETS_BUNDLE, WIDGET_TYPE, TENANT_PROFILE, DEVICE_PROFILE, API_USAGE_STATE, TB_RESOURCE, OTA_PACKAGE, EDGE, RPC;
+    /**
+     * 租户
+     */
+    TENANT,
+    /**
+     * 客户
+     */
+    CUSTOMER,
+    /**
+     * 用户
+     */
+    USER,
+    /**
+     * 指示板
+     */
+    DASHBOARD,
+    /**
+     * 资产
+     */
+    ASSET,
+    /**
+     * 设备
+     */
+    DEVICE,
+    /**
+     * 告警
+     */
+    ALARM,
+    /**
+     * 规则链
+     */
+    RULE_CHAIN,
+    /**
+     * 规则节点
+     */
+    RULE_NODE,
+    /**
+     * 实体视图
+     */
+    ENTITY_VIEW,
+    /**
+     * 部件库
+     */
+    WIDGETS_BUNDLE,
+    /**
+     * 部件类型
+     */
+    WIDGET_TYPE,
+    /**
+     * 租户配置
+     */
+    TENANT_PROFILE,
+    /**
+     * 设备配置
+     */
+    DEVICE_PROFILE,
+    /**
+     * 接口使用统计?
+     */
+    API_USAGE_STATE,
+    /**
+     * tb菜单?
+     */
+    TB_RESOURCE,
+    /**
+     * ota包?
+     */
+    OTA_PACKAGE,
+    /**
+     * 边缘端?
+     */
+    EDGE,
+    /**
+     * 远程调用
+     */
+    RPC;
+
 }

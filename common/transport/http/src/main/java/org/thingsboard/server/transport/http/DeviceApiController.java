@@ -194,8 +194,11 @@ public class DeviceApiController implements TbTransportService {
             @ApiParam(value = ACCESS_TOKEN_PARAM_DESCRIPTION, required = true, defaultValue = "YOUR_DEVICE_ACCESS_TOKEN")
             @PathVariable("deviceToken") String deviceToken,
             @RequestBody String json, HttpServletRequest request) {
-        DeferredResult<ResponseEntity> responseWriter = new DeferredResult<ResponseEntity>();
-        transportContext.getTransportService().process(DeviceTransportType.DEFAULT, ValidateDeviceTokenRequestMsg.newBuilder().setToken(deviceToken).build(),
+        DeferredResult<ResponseEntity> responseWriter = new DeferredResult<>();
+        transportContext.getTransportService().process(DeviceTransportType.DEFAULT,
+
+                ValidateDeviceTokenRequestMsg.newBuilder().setToken(deviceToken).build(),
+
                 new DeviceAuthCallback(transportContext, responseWriter, sessionInfo -> {
                     TransportService transportService = transportContext.getTransportService();
                     transportService.process(sessionInfo, JsonConverter.convertToTelemetryProto(new JsonParser().parse(json)),
@@ -546,6 +549,9 @@ public class DeviceApiController implements TbTransportService {
         }
     }
 
+    /**
+     * 成功的回调方法
+     */
     private static class HttpOkCallback implements TransportServiceCallback<Void> {
         private final DeferredResult<ResponseEntity> responseWriter;
 

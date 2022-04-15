@@ -15,47 +15,112 @@
  */
 package org.thingsboard.server.common.data.tenant.profile;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import org.thingsboard.server.common.data.ApiUsageRecordKey;
+import org.thingsboard.server.common.data.TenantProfileType;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.thingsboard.server.common.data.ApiUsageRecordKey;
-import org.thingsboard.server.common.data.TenantProfileType;
 
+/**
+ * 默认租户配置实现类
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
 public class DefaultTenantProfileConfiguration implements TenantProfileConfiguration {
 
+    /**
+     * 最大设备数
+     */
     private long maxDevices;
+    /**
+     * 最大资产数量
+     */
     private long maxAssets;
+    /**
+     * 最大客户数
+     */
     private long maxCustomers;
+    /**
+     * 最大用户数
+     */
     private long maxUsers;
+    /**
+     * 仪表盘最大数量
+     */
     private long maxDashboards;
+    /**
+     * 最大规则链数
+     */
     private long maxRuleChains;
     private long maxResourcesInBytes;
     private long maxOtaPackagesInBytes;
 
+    /**
+     * 租户传输消息速率限制
+     */
     private String transportTenantMsgRateLimit;
+    /**
+     * 租户遥测消息速率限制
+     */
     private String transportTenantTelemetryMsgRateLimit;
+    /**
+     * 租户遥测数据点速率限制
+     */
     private String transportTenantTelemetryDataPointsRateLimit;
+    /**
+     * 设备消息速率限制
+     */
     private String transportDeviceMsgRateLimit;
+    /**
+     * 设备遥测消息速率限制
+     */
     private String transportDeviceTelemetryMsgRateLimit;
+    /**
+     * 设备遥测数据点速率限制
+     */
     private String transportDeviceTelemetryDataPointsRateLimit;
 
+    /**
+     * 最大传输消息数
+     */
     private long maxTransportMessages;
+    /**
+     * 传输数据点的最大数量
+     */
     private long maxTransportDataPoints;
+    /**
+     * 最大规则引擎执行数量
+     */
     private long maxREExecutions;
+    /**
+     * 最大JavaScript 执行数
+     */
     private long maxJSExecutions;
+    /**
+     * 最大日存储数据点数
+     */
     private long maxDPStorageDays;
+    /**
+     * 每条消息的最大规则节点执行数
+     */
     private int maxRuleNodeExecutionsPerMessage;
+    /**
+     * 发送的最大邮件数
+     */
     private long maxEmails;
+    /**
+     * 发送的最大短信数
+     */
     private long maxSms;
     private long maxCreatedAlarms;
 
+    /**
+     * 默认存储etl天数
+     */
     private int defaultStorageTtlDays;
     private int alarmsTtlDays;
     private int rpcTtlDays;

@@ -15,15 +15,23 @@
  */
 package org.thingsboard.server.common.transport.limits;
 
+import java.net.InetSocketAddress;
+
 import org.thingsboard.server.common.data.EntityType;
 import org.thingsboard.server.common.data.id.DeviceId;
 import org.thingsboard.server.common.data.id.TenantId;
 import org.thingsboard.server.common.transport.profile.TenantProfileUpdateResult;
 
-import java.net.InetSocketAddress;
-
 public interface TransportRateLimitService {
 
+    /**
+     * 根据租户id和设备id以及数据点位 判断是否有超出限制的实体类型
+     * 
+     * @param tenantId
+     * @param deviceId
+     * @param dataPoints
+     * @return
+     */
     EntityType checkLimits(TenantId tenantId, DeviceId deviceId, int dataPoints);
 
     void update(TenantProfileUpdateResult update);
