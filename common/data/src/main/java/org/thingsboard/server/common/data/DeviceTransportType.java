@@ -15,10 +15,30 @@
  */
 package org.thingsboard.server.common.data;
 
+/**
+ * @date 2022-04-15 传输类型定义
+ * @author tungchi
+ */
+
 public enum DeviceTransportType {
+    /**
+     * 传输方式类型,default
+     */
     DEFAULT,
+    /**
+     * 传输方式类型,MQTT
+     */
     MQTT,
+    /**
+     * 传输方式类型,COAP
+     */
     COAP,
+    /**
+     * 传输方式类型,LWM2M
+     */
     LWM2M,
+    /**
+     * 传输方式类型,SNMP
+     */
     SNMP
 }

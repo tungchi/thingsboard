@@ -15,6 +15,9 @@
  */
 package org.thingsboard.server.common.transport;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.thingsboard.server.common.data.DeviceProfile;
 import org.thingsboard.server.common.data.DeviceTransportType;
 import org.thingsboard.server.common.data.rpc.RpcStatus;
@@ -22,46 +25,10 @@ import org.thingsboard.server.common.transport.auth.GetOrCreateDeviceFromGateway
 import org.thingsboard.server.common.transport.auth.ValidateDeviceCredentialsResponse;
 import org.thingsboard.server.common.transport.service.SessionMetaData;
 import org.thingsboard.server.gen.transport.TransportProtos;
-import org.thingsboard.server.gen.transport.TransportProtos.ClaimDeviceMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetAttributeRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetDeviceCredentialsRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetDeviceCredentialsResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetDeviceRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetDeviceResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetEntityProfileRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetEntityProfileResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetOrCreateDeviceFromGatewayRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetOtaPackageRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetOtaPackageResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetResourceRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetResourceResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetSnmpDevicesRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.GetSnmpDevicesResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.LwM2MRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.LwM2MResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.PostAttributeMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.PostTelemetryMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ProvisionDeviceRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ProvisionDeviceResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.SessionEventMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.SessionInfoProto;
-import org.thingsboard.server.gen.transport.TransportProtos.SubscribeToAttributeUpdatesMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.SubscribeToRPCMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.SubscriptionInfoProto;
-import org.thingsboard.server.gen.transport.TransportProtos.ToDeviceRpcRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ToDeviceRpcResponseMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ToServerRpcRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.TransportToDeviceActorMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ValidateBasicMqttCredRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ValidateDeviceLwM2MCredentialsRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ValidateDeviceTokenRequestMsg;
-import org.thingsboard.server.gen.transport.TransportProtos.ValidateDeviceX509CertRequestMsg;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.atomic.AtomicInteger;
+import org.thingsboard.server.gen.transport.TransportProtos.*;
 
 /**
- * Created by ashvayka on 04.10.18.
+ * 数据传输接口定义 Created by ashvayka on 04.10.18.
  */
 public interface TransportService {
 

@@ -16,7 +16,10 @@
 package org.thingsboard.server.common.transport;
 
 /**
- * Created by ashvayka on 04.10.18.
+ * 传输方法的回调类 Created by ashvayka on 04.10.18.
+ * 
+ * @author tungchi
+ * @date 2022-04-15
  */
 public interface TransportServiceCallback<T> {
 
